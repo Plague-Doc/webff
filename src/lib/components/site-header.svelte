@@ -8,8 +8,8 @@
 	<nav class="flex h-14 items-center justify-between px-8">
 		<div class="flex items-center gap-0.5">
 			<Button variant="ghost" href="/" class="gap-0 text-lg font-bold">
-				<span class="text-lg text-primary">FF</span>
-				<span>Core</span>
+				<span>Web</span>
+				<span class="text-primary">FF</span>
 			</Button>
 			<Button variant="ghost" href="/quick">Quick Convert</Button>
 			<Button variant="ghost" href="/web">Web Optimize</Button>
