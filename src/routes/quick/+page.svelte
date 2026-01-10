@@ -30,12 +30,18 @@
 		pageState.status = 'idle';
 		targetLabel = '';
 		await ffcore.load();
-		console.log('RESET!');
 	}
 </script>
 
+<section class="pt-12">
+	<h1 class="pb-2 text-center text-4xl font-semibold">Quick Convert</h1>
+	<h2 class="text-center text-lg text-muted-foreground">
+		Easily convert your video, image, or audio files to the format of your choice.
+	</h2>
+</section>
+
 {#if !targetLabel}
-	<section class="flex justify-center pt-24">
+	<section class="flex justify-center pt-12">
 		<FileUpload bind:pageState {uploadValidation} />
 
 		<Dialog.Root open={pageState.files.length > 0} onOpenChange={reset}>

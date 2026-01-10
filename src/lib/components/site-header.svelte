@@ -12,12 +12,12 @@
 				<span class="text-primary">FF</span>
 			</Button>
 			<Button variant="ghost" href="/quick">Quick Convert</Button>
-			<Button variant="ghost" href="/web">Web Optimize</Button>
-			<Button variant="ghost" href="/compress">Compress Video</Button>
+			<Button variant="ghost" disabled href="/web">Web Optimize</Button>
+			<Button variant="ghost" disabled href="/compress">Compress Video</Button>
 		</div>
 
-		<div class="flex items-center gap-4">
-			<Button variant="ghost" size="icon" onclick={toggleMode}>
+		<div class="flex items-center">
+			<Button variant="ghost" size="icon-lg" onclick={toggleMode}>
 				<SunMoon class="size-6" />
 			</Button>
 		</div>

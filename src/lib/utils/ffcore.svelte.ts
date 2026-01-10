@@ -3,11 +3,13 @@ import { fetchFile, toBlobURL } from '@ffmpeg/util';
 
 class Converter {
 	public ffmpeg?: FFmpeg;
+	public loaded = $state(false);
 	public progress = $state(0);
-	public isLoading = false;
+	private isLoading = false;
 
 	async load() {
 		if (this.isLoading) return;
+		this.loaded = false;
 		this.isLoading = true;
 
 		try {
@@ -32,8 +34,10 @@ class Converter {
 			});
 
 			this.ffmpeg = ffmpeg;
+			this.loaded = true;
 			console.log('FFmpeg loaded successfully.');
 		} catch (e) {
+			this.loaded = false;
 			console.error('FFmpeg load failed:', e);
 		} finally {
 			this.isLoading = false;
@@ -54,7 +58,6 @@ class Converter {
 			return new File([new Blob([fileData])], outName);
 		} catch (err) {
 			console.warn(err);
-			return null;
 		}
 	}
 }

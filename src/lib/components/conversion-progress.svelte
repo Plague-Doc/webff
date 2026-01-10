@@ -45,7 +45,7 @@
 	}
 </script>
 
-<Item.Root variant="muted" class="w-full max-w-md">
+<Item.Root variant="muted" class="w-full max-w-lg">
 	<Item.Media>
 		{#if pageState.status !== 'done'}
 			<Spinner class="size-5" />
