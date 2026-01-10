@@ -4,39 +4,58 @@ import { fetchFile, toBlobURL } from '@ffmpeg/util';
 class Converter {
 	public ffmpeg?: FFmpeg;
 	public progress = $state(0);
+	public isLoading = false;
 
 	async load() {
-		if (this.ffmpeg) this.ffmpeg.terminate();
-		else this.ffmpeg = new FFmpeg();
+		if (this.isLoading) return;
+		this.isLoading = true;
 
-		const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.10/dist/esm';
-		// const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm';
+		try {
+			if (this.ffmpeg) {
+				this.ffmpeg.terminate();
+				this.ffmpeg = undefined;
+				await new Promise((resolve) => setTimeout(resolve, 100));
+			}
 
-		await this.ffmpeg.load({
-			coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-			wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-			workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript')
-		});
+			const ffmpeg = new FFmpeg();
+			const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.10/dist/esm';
 
-		this.progress = 0;
-		this.ffmpeg.on('progress', (event) => {
-			const rawProgress = event.progress * 100;
-			this.progress = Math.min(100, Math.max(0, rawProgress));
-		});
+			await ffmpeg.load({
+				coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+				wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+				workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript')
+			});
 
-		console.log('FFmpeg loaded:', this.ffmpeg.loaded);
+			this.progress = 0;
+			ffmpeg.on('progress', (event) => {
+				this.progress = Math.min(100, Math.max(0, event.progress * 100));
+			});
+
+			this.ffmpeg = ffmpeg;
+			console.log('FFmpeg loaded successfully.');
+		} catch (e) {
+			console.error('FFmpeg load failed:', e);
+		} finally {
+			this.isLoading = false;
+		}
 	}
 
 	async transcode(file: File, args: string[], outName: string) {
-		if (!this.ffmpeg) return;
+		const ffmpeg = this.ffmpeg;
+		if (!ffmpeg) return;
 
-		await this.ffmpeg.writeFile(file.name, await fetchFile(file));
-		await this.ffmpeg.exec(['-i', file.name, ...args, outName]);
+		try {
+			await ffmpeg.writeFile(file.name, await fetchFile(file));
+			await ffmpeg.exec(['-i', file.name, ...args, outName]);
 
-		const data = await this.ffmpeg.readFile(outName);
-		const fileData = typeof data === 'string' ? data : (data as ArrayBufferView<ArrayBuffer>);
+			const data = await ffmpeg.readFile(outName);
+			const fileData = typeof data === 'string' ? data : (data as ArrayBufferView<ArrayBuffer>);
 
-		return new File([new Blob([fileData])], outName);
+			return new File([new Blob([fileData])], outName);
+		} catch (err) {
+			console.warn(err);
+			return null;
+		}
 	}
 }
 
