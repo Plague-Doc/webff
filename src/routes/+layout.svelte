@@ -29,7 +29,7 @@
 
 <SiteHeader />
 
-<main class="container mx-auto grid flex-1 grid-cols-1 grid-rows-1 overflow-x-hidden p-4 pt-12">
+<main class="container mx-auto grid flex-1 grid-cols-1 grid-rows-1 overflow-x-hidden px-4 py-6 md:pt-12">
 	{#key page.url.pathname}
 		<div class="col-start-1 row-start-1" in:fly={{ y: 6, duration: 150, delay: 100 }} out:fade={{ duration: 100 }}>
 			{@render children()}

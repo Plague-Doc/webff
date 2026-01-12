@@ -33,7 +33,7 @@
 	}
 </script>
 
-<section class="pt-12">
+<section class="pt-6 md:pt-12">
 	<h1 class="pb-2 text-center text-4xl font-semibold">Quick Convert</h1>
 	<h2 class="text-center text-lg text-muted-foreground">
 		Easily convert your video, image, or audio files to the format of your choice.
