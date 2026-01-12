@@ -67,7 +67,7 @@
 		</Dialog.Root>
 	</section>
 {:else}
-	<section class="flex justify-center pt-16">
+	<section class="flex justify-center pt-12">
 		<ConversionProgress {pageState} {reset} />
 	</section>
 {/if}

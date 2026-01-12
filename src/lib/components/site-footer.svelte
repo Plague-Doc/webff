@@ -2,7 +2,7 @@
 </script>
 
 <footer class="z-50 h-12 w-full border-t bg-background text-sm text-muted-foreground">
-	<div class="container mx-auto flex h-full items-center justify-between">
+	<div class="container mx-auto flex h-full items-center justify-between px-4">
 		<div class="flex items-center gap-1">
 			<span>&copy; 2026 Norbert Vass</span>
 			<span class="mb-0.5 px-0.5">&bull;</span>
