@@ -1,41 +1,41 @@
 <script lang="ts">
 	import { ffcore } from '$lib/utils/ffcore.svelte';
-	import type { PageState } from '$lib/utils/utils';
+	import type { FileState } from '$lib/utils/utils';
 	import { LoaderCircle, Upload } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 
 	type Props = {
-		pageState: PageState;
+		onUpload: (files: FileState[]) => void;
 		uploadValidation: (files: File[]) => Promise<boolean>;
 	};
 
-	let { pageState = $bindable(), uploadValidation }: Props = $props();
+	let { onUpload, uploadValidation }: Props = $props();
+
 	let isDragged = $state(false);
 
-	async function handleUpload(fileList: FileList | null) {
-		if (!fileList) {
+	async function handleUpload(files: File[]) {
+		if (!files.length) {
 			toast.error('Error while trying to upload files');
 			return;
 		}
 
-		const files = Array.from(fileList);
-
 		if (await uploadValidation(files)) {
-			pageState.files = files.map((file) => ({ input: file, status: 'idle' }));
+			const fileStates: FileState[] = files.map((file) => ({ input: file, status: 'idle' }));
+			onUpload(fileStates);
 		}
 	}
 
 	async function handleChange(event: Event) {
 		event.preventDefault();
 		isDragged = false;
-		await handleUpload((event.target as HTMLInputElement).files);
+		await handleUpload(Array.from((event.target as HTMLInputElement).files ?? []));
 	}
 
 	async function handleDrop(event: DragEvent) {
 		event.preventDefault();
 		isDragged = false;
 		if (event.dataTransfer?.files) {
-			await handleUpload(event.dataTransfer.files);
+			await handleUpload(Array.from(event.dataTransfer.files ?? []));
 		}
 	}
 

@@ -1,35 +1,40 @@
 <script lang="ts">
 	import ConversionProgress from '$lib/components/conversion-progress.svelte';
 	import FileUpload from '$lib/components/file-upload.svelte';
+	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import * as Select from '$lib/components/ui/select';
+	import * as ToggleGroup from '$lib/components/ui/toggle-group';
 	import { ffcore } from '$lib/utils/ffcore.svelte';
-	import { type PageState } from '$lib/utils/utils';
-	import { convert } from './(utils)/convert';
-	import { getFormats } from './(utils)/formats';
-	import { uploadValidation } from './(utils)/validation';
+	import { type FileState } from '$lib/utils/utils';
+	import { convert, getFormats, uploadValidation } from './utils';
 
-	let pageState = $state<PageState>({
-		files: [],
-		status: 'idle'
-	});
+	type Status = 'idle' | 'selecting-format' | 'converting' | 'done';
 
+	let files = $state<FileState[]>([]);
+	let status = $state<Status>('idle');
 	let targetLabel = $state('');
 
-	$effect(() => {
-		if (pageState.files.length && targetLabel && pageState.status === 'idle') {
-			pageState.status = 'converting';
-			convert(pageState.files, targetLabel).then(() => {
-				if (pageState.files.length && targetLabel) pageState.status = 'done';
-			});
-		}
-	});
+	function onFilesUploaded(uploadedFiles: FileState[]) {
+		files = uploadedFiles;
+		status = 'selecting-format';
+	}
+
+	async function startConversion() {
+		if (!files.length || !targetLabel) return;
+		status = 'converting';
+		await convert(files, targetLabel);
+		if (status === 'converting') status = 'done';
+	}
 
 	async function reset() {
-		pageState.files = [];
-		pageState.status = 'idle';
+		files = [];
+		status = 'idle';
 		targetLabel = '';
 		await ffcore.load();
+	}
+
+	function closeDialog() {
+		if (status === 'selecting-format') reset();
 	}
 </script>
 
@@ -40,34 +45,41 @@
 	</h2>
 </section>
 
-{#if !targetLabel}
+{#if status === 'idle' || status === 'selecting-format'}
 	<section class="flex justify-center pt-12">
-		<FileUpload bind:pageState {uploadValidation} />
+		<FileUpload onUpload={onFilesUploaded} {uploadValidation} />
 
-		<Dialog.Root open={pageState.files.length > 0} onOpenChange={reset}>
+		<Dialog.Root open={status === 'selecting-format'} onOpenChange={closeDialog}>
 			<Dialog.Content onOpenAutoFocus={(e) => e.preventDefault()}>
 				<Dialog.Header>
 					<Dialog.Title>Select format</Dialog.Title>
 					<Dialog.Description>Select the format you want your files to be converted into.</Dialog.Description>
 				</Dialog.Header>
 
-				<div class="flex items-center justify-center pt-4 sm:justify-between sm:gap-8">
-					<div class="hidden min-w-fit font-semibold sm:block">Convert into</div>
+				<ToggleGroup.Root
+					type="single"
+					bind:value={targetLabel}
+					variant="outline"
+					spacing={1.5}
+					class="grid w-full grid-cols-4 py-4 sm:grid-cols-6">
+					{#each getFormats(files) as format}
+						<ToggleGroup.Item
+							value={format.label}
+							class="py-5 hover:border-muted-foreground hover:bg-transparent data-[state=on]:border-muted-foreground">
+							{format.label}
+						</ToggleGroup.Item>
+					{/each}
+				</ToggleGroup.Root>
 
-					<Select.Root type="single" bind:value={targetLabel}>
-						<Select.Trigger class="w-full max-w-64 sm:max-w-full">Select format</Select.Trigger>
-						<Select.Content>
-							{#each getFormats(pageState.files) as format}
-								<Select.Item value={format.label} />
-							{/each}
-						</Select.Content>
-					</Select.Root>
-				</div>
+				<Dialog.Footer>
+					<Dialog.Close class={buttonVariants({ variant: 'outline' })}>Cancel</Dialog.Close>
+					<Button onclick={startConversion}>Convert</Button>
+				</Dialog.Footer>
 			</Dialog.Content>
 		</Dialog.Root>
 	</section>
 {:else}
 	<section class="flex justify-center pt-12">
-		<ConversionProgress {pageState} {reset} />
+		<ConversionProgress {files} {reset} />
 	</section>
 {/if}

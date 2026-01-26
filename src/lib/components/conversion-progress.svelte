@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Item from '$lib/components/ui/item';
 	import { ffcore } from '$lib/utils/ffcore.svelte';
-	import type { PageState } from '$lib/utils/utils';
+	import type { FileState } from '$lib/utils/utils';
 	import { Check, Download, X } from '@lucide/svelte';
 	import pkg from 'file-saver';
 	import JSZip from 'jszip';
@@ -9,26 +9,28 @@
 	import { Button } from './ui/button';
 	import Progress from './ui/progress/progress.svelte';
 	import { Spinner } from './ui/spinner';
+	const { saveAs } = pkg;
 
 	type Props = {
-		pageState: PageState;
+		files: FileState[];
 		reset: () => void;
 	};
 
-	const { saveAs } = pkg;
+	const { files, reset }: Props = $props();
 
-	const { pageState, reset }: Props = $props();
-
-	const convertingCount = $derived(
-		pageState.files.reduce((count, file) => (file.status !== 'idle' ? count + 1 : count), 0)
+	const isConverting = $derived(
+		!files.every((file) => file.status === 'idle') &&
+			!files.every((file) => file.status === 'done' || file.status === 'error')
 	);
 
-	let downloading = $state(false);
+	const convertingCount = $derived(files.reduce((count, file) => (file.status !== 'idle' ? count + 1 : count), 0));
+
+	let isDownloading = $state(false);
 
 	async function download() {
-		downloading = true;
+		isDownloading = true;
 
-		const convertedFiles = pageState.files.map((file) => file.output).filter((file) => file !== undefined);
+		const convertedFiles = files.map((file) => file.output).filter((file) => file !== undefined);
 
 		if (convertedFiles.length === 0) {
 			toast.error('Failed to convert files.');
@@ -41,13 +43,13 @@
 			saveAs(zippedFiles, 'converted-files.zip');
 		}
 
-		downloading = false;
+		isDownloading = false;
 	}
 </script>
 
 <Item.Root variant="muted" class="w-full max-w-lg">
 	<Item.Media>
-		{#if pageState.status !== 'done'}
+		{#if isConverting}
 			<Spinner class="size-5" />
 		{:else}
 			<Check class="size-5" />
@@ -56,30 +58,32 @@
 
 	<Item.Content>
 		<Item.Title class="line-clamp-1">
-			{#if pageState.status !== 'done'}
-				<span>Converting files...</span>
+			{#if isConverting}
+				<span class="hidden sm:block">Converting files...</span>
+				<span class="block sm:hidden">Converting...</span>
 			{:else}
-				<span>Conversion finished</span>
+				<span class="hidden sm:block">Conversion finished</span>
+				<span class="block sm:hidden">Finished</span>
 			{/if}
 		</Item.Title>
 	</Item.Content>
 
-	{#if pageState.status !== 'done'}
+	{#if isConverting}
 		<Item.Content>
 			<Item.Title class="text-muted-foreground tabular-nums">
-				{convertingCount} / {pageState.files.length}
+				{convertingCount} / {files.length}
 			</Item.Title>
 		</Item.Content>
 	{/if}
 
 	<Item.Actions>
-		{#if pageState.status !== 'done'}
+		{#if isConverting}
 			<Button onclick={reset} variant="outline">
 				<X /> Cancel
 			</Button>
 		{:else}
-			<Button onclick={download} disabled={downloading}>
-				{#if downloading}
+			<Button onclick={download} disabled={isDownloading}>
+				{#if isDownloading}
 					<Spinner />
 				{:else}
 					<Download />
@@ -89,7 +93,7 @@
 		{/if}
 	</Item.Actions>
 
-	{#if pageState.status !== 'done'}
+	{#if isConverting}
 		<Item.Footer class="pt-2">
 			<Progress value={ffcore.progress === 100 ? 0 : ffcore.progress} />
 		</Item.Footer>

@@ -18,11 +18,6 @@ export type FileState = {
 	status: 'idle' | 'converting' | 'done' | 'error';
 };
 
-export type PageState = {
-	files: FileState[];
-	status: 'idle' | 'converting' | 'done';
-};
-
 export function getFileBaseName(file: File) {
 	const lastDotIndex = file.name.lastIndexOf('.');
 	if (lastDotIndex === -1) return file.name;
