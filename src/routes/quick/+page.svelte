@@ -6,7 +6,7 @@
 	import * as ToggleGroup from '$lib/components/ui/toggle-group';
 	import { ffcore } from '$lib/utils/ffcore.svelte';
 	import { type FileState } from '$lib/utils/utils';
-	import { convert, getFormats, uploadValidation } from './utils';
+	import { convert, getFormats, isUploadValid } from './utils';
 
 	type Status = 'idle' | 'selecting-format' | 'converting' | 'done';
 
@@ -15,8 +15,10 @@
 	let targetLabel = $state('');
 
 	function onFilesUploaded(uploadedFiles: FileState[]) {
-		files = uploadedFiles;
-		status = 'selecting-format';
+		if (isUploadValid(uploadedFiles)) {
+			files = uploadedFiles;
+			status = 'selecting-format';
+		}
 	}
 
 	async function startConversion() {
@@ -47,7 +49,7 @@
 
 {#if status === 'idle' || status === 'selecting-format'}
 	<section class="flex justify-center pt-12">
-		<FileUpload onUpload={onFilesUploaded} {uploadValidation} />
+		<FileUpload onUpload={onFilesUploaded} />
 
 		<Dialog.Root open={status === 'selecting-format'} onOpenChange={closeDialog}>
 			<Dialog.Content onOpenAutoFocus={(e) => e.preventDefault()}>

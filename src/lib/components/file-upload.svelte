@@ -4,25 +4,13 @@
 	import { LoaderCircle, Upload } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 
-	type Props = {
-		onUpload: (files: FileState[]) => void;
-		uploadValidation: (files: File[]) => Promise<boolean>;
-	};
-
-	let { onUpload, uploadValidation }: Props = $props();
+	let { onUpload }: { onUpload: (files: FileState[]) => void } = $props();
 
 	let isDragged = $state(false);
 
 	async function handleUpload(files: File[]) {
-		if (!files.length) {
-			toast.error('Error while trying to upload files');
-			return;
-		}
-
-		if (await uploadValidation(files)) {
-			const fileStates: FileState[] = files.map((file) => ({ input: file, status: 'idle' }));
-			onUpload(fileStates);
-		}
+		if (files.length) onUpload(files.map((file) => ({ input: file, status: 'idle' })));
+		else toast.error('Error while trying to upload files');
 	}
 
 	async function handleChange(event: Event) {
@@ -34,9 +22,7 @@
 	async function handleDrop(event: DragEvent) {
 		event.preventDefault();
 		isDragged = false;
-		if (event.dataTransfer?.files) {
-			await handleUpload(Array.from(event.dataTransfer.files ?? []));
-		}
+		if (event.dataTransfer?.files) await handleUpload(Array.from(event.dataTransfer.files ?? []));
 	}
 
 	async function handleDragover(event: DragEvent) {
