@@ -58,6 +58,7 @@ class Converter {
 			return new File([new Blob([fileData])], outName);
 		} catch (err) {
 			console.warn(err);
+			await this.load();
 		}
 	}
 }
