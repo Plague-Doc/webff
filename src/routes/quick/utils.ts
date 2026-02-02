@@ -83,9 +83,9 @@ export function getFormats(files: FileState[]): Format[] {
 // Validation
 
 export function isUploadValid(files: FileState[]): boolean {
-	// 2e9 => 2*10^9 bytes => 2 GB limit per file
-	if (!files.every((file) => file.input.size < 2e9)) {
-		toast.error('Each uploaded file must be under 2.00GB');
+	// 5e8 => 5*10^8 bytes => 500MB limit per file
+	if (!files.every((file) => file.input.size < 5e8)) {
+		toast.error('Each uploaded file must be under 500MB');
 		return false;
 	}
 
