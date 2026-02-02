@@ -18,6 +18,31 @@ const formats: Record<string, Format[]> = {
 			options: ['-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '192k']
 		},
 		{
+			label: 'MOV',
+			extension: '.mov',
+			options: ['-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '192k']
+		},
+		{
+			label: 'WEBM',
+			extension: '.webm',
+			options: [
+				'-c:v',
+				'libvpx',
+				'-qmin',
+				'4',
+				'-qmax',
+				'40',
+				'-cpu-used',
+				'5',
+				'-deadline',
+				'realtime',
+				'-c:a',
+				'libvorbis',
+				'-q:a',
+				'4'
+			]
+		},
+		{
 			label: 'MKV',
 			extension: '.mkv',
 			options: ['-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '192k']
@@ -28,29 +53,24 @@ const formats: Record<string, Format[]> = {
 			options: ['-c:v', 'mpeg4', '-q:v', '5', '-c:a', 'aac', '-b:a', '192k']
 		},
 		{
-			label: 'MOV',
-			extension: '.mov',
-			options: ['-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '192k']
-		},
-		{
 			label: 'WMV',
 			extension: '.wmv',
 			options: ['-c:v', 'mpeg4', '-q:v', '5', '-c:a', 'aac', '-b:a', '192k']
 		}
 	],
 	image: [
-		{ label: 'PNG', extension: '.png', options: [] },
 		{ label: 'JPEG', extension: '.jpeg', options: ['-q:v', '2'] },
-		{ label: 'GIF', extension: '.gif', options: [] },
+		{ label: 'PNG', extension: '.png', options: [] },
 		{ label: 'WEBP', extension: '.webp', options: ['-c:v', 'libwebp', '-lossless', '1'] },
-		{ label: 'BMP', extension: '.bmp', options: [] },
-		{ label: 'TIFF', extension: '.tiff', options: [] }
+		{ label: 'GIF', extension: '.gif', options: [] },
+		{ label: 'TIFF', extension: '.tiff', options: [] },
+		{ label: 'BMP', extension: '.bmp', options: [] }
 	],
 	audio: [
 		{ label: 'MP3', extension: '.mp3', options: ['-c:a', 'libmp3lame', '-q:a', '2'] },
 		{ label: 'WAV', extension: '.wav', options: [] },
-		{ label: 'OGG', extension: '.ogg', options: ['-c:a', 'libvorbis', '-q:a', '4'] },
-		{ label: 'FLAC', extension: '.flac', options: [] }
+		{ label: 'FLAC', extension: '.flac', options: [] },
+		{ label: 'OGG', extension: '.ogg', options: ['-c:a', 'libvorbis', '-q:a', '4'] }
 	]
 };
 
