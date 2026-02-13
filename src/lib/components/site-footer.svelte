@@ -7,7 +7,7 @@
 			<span>&copy; 2026 Norbert Vass</span>
 			<span class="mb-0.5 px-0.5">&bull;</span>
 			<a
-				href="https://github.com/Plague-Doc/webff/blob/main/LICENSE"
+				href="https://github.com/vassn/webff/blob/main/LICENSE"
 				target="_blank"
 				class="underline-offset-4 hover:underline">
 				MIT License
@@ -17,9 +17,7 @@
 		<div class="hidden items-center gap-4 md:flex">
 			<!-- <a href="/" class="underline-offset-4 hover:underline">About</a> -->
 
-			<a href="https://github.com/Plague-Doc/webff" target="_blank" class="underline-offset-4 hover:underline">
-				GitHub
-			</a>
+			<a href="https://github.com/vassn/webff" target="_blank" class="underline-offset-4 hover:underline"> GitHub </a>
 		</div>
 	</div>
 </footer>

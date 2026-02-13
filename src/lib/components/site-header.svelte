@@ -80,7 +80,7 @@
 		<div class="mt-8 px-4 py-2 font-semibold text-muted-foreground">Other Pages</div>
 		<div class="w-full px-4 py-2 text-2xl font-semibold text-muted-foreground">About</div>
 		<a
-			href="https://github.com/Plague-Doc/webff"
+			href="https://github.com/vassn/webff"
 			target="_blank"
 			class="flex w-full items-center gap-2 px-4 py-2 text-2xl font-semibold">
 			<span>GitHub</span>
