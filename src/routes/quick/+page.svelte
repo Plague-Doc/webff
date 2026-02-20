@@ -28,11 +28,11 @@
 		if (status === 'converting') status = 'done';
 	}
 
-	async function reset() {
+	function reset() {
 		files = [];
 		status = 'idle';
 		targetLabel = '';
-		await ffcore.load();
+		ffcore.load();
 	}
 
 	function closeDialog() {
