@@ -23,26 +23,6 @@ const formats: Record<string, Format[]> = {
 			options: ['-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '192k']
 		},
 		{
-			label: 'WEBM',
-			extension: '.webm',
-			options: [
-				'-c:v',
-				'libvpx',
-				'-qmin',
-				'4',
-				'-qmax',
-				'40',
-				'-cpu-used',
-				'5',
-				'-deadline',
-				'realtime',
-				'-c:a',
-				'libvorbis',
-				'-q:a',
-				'4'
-			]
-		},
-		{
 			label: 'MKV',
 			extension: '.mkv',
 			options: ['-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '192k']
@@ -61,7 +41,6 @@ const formats: Record<string, Format[]> = {
 	image: [
 		{ label: 'JPEG', extension: '.jpeg', options: ['-q:v', '2'] },
 		{ label: 'PNG', extension: '.png', options: [] },
-		{ label: 'WEBP', extension: '.webp', options: ['-c:v', 'libwebp', '-lossless', '1'] },
 		{ label: 'GIF', extension: '.gif', options: [] },
 		{ label: 'TIFF', extension: '.tiff', options: [] },
 		{ label: 'BMP', extension: '.bmp', options: [] }
@@ -97,7 +76,7 @@ export function isUploadValid(files: FileState[]): boolean {
 	}
 
 	if (baseType !== 'image' && baseType !== 'video' && baseType !== 'audio') {
-		toast.error('Uploaded file media type is not supported');
+		toast.error("An uploaded file's media type is not supported");
 		return false;
 	}
 

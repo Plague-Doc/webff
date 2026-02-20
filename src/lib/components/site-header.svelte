@@ -38,7 +38,7 @@
 					<span class="text-primary">FF</span>
 				</Button>
 				<Button variant="ghost" href="/quick">Quick Convert</Button>
-				<Button variant="ghost" disabled href="/web">Web Optimize</Button>
+				<Button variant="ghost" href="/web">Web Optimize</Button>
 				<Button variant="ghost" disabled href="/compress">Compress Video</Button>
 			</div>
 
@@ -74,7 +74,7 @@
 		preventScroll>
 		<div class="px-4 py-2 font-semibold text-muted-foreground">Conversion Tools</div>
 		<a href="/quick" class="w-full px-4 py-2 text-2xl font-semibold">Quick Convert</a>
-		<div class="w-full px-4 py-2 text-2xl font-semibold text-muted-foreground">Web Optimize</div>
+		<a href="/web" class="w-full px-4 py-2 text-2xl font-semibold">Web Optimize</a>
 		<div class="w-full px-4 py-2 text-2xl font-semibold text-muted-foreground">Video Compress</div>
 
 		<div class="mt-8 px-4 py-2 font-semibold text-muted-foreground">Other Pages</div>
