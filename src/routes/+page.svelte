@@ -16,8 +16,8 @@
 	<Button href="/" variant="ghost">How It Works</Button>
 </section>
 
-<section class="mx-auto grid w-fit grid-cols-1 gap-6 pt-18 lg:grid-cols-2 lg:pt-22">
-	<div class="h-48 w-96 rounded-lg border bg-card p-6">
+<section class="mx-auto grid max-w-4xl grid-cols-1 gap-4 pt-18 lg:grid-cols-2 lg:gap-6 lg:pt-24">
+	<div class="rounded-lg border bg-card p-6">
 		<p class="flex items-center gap-2">
 			<Shield class="size-6" />
 			<span class="text-lg font-bold">100% Private</span>
@@ -28,7 +28,7 @@
 		</p>
 	</div>
 
-	<div class="h-48 w-96 rounded-lg border bg-card p-6">
+	<div class="rounded-lg border bg-card p-6">
 		<p class="flex items-center gap-2">
 			<Computer class="size-6" />
 			<span class="text-lg font-bold">Fully Local</span>
@@ -39,7 +39,7 @@
 		</p>
 	</div>
 
-	<div class="h-48 w-96 rounded-lg border bg-card p-6">
+	<div class="rounded-lg border bg-card p-6">
 		<p class="flex items-center gap-2">
 			<Binary class="size-6" />
 			<span class="text-lg font-bold">Powerful Tech</span>
@@ -50,7 +50,7 @@
 		</p>
 	</div>
 
-	<div class="h-48 w-96 rounded-lg border bg-card p-6">
+	<div class="rounded-lg border bg-card p-6">
 		<p class="flex items-center gap-2">
 			<PanelsTopLeft class="size-6" />
 			<span class="text-lg font-bold">Simple UI</span>
