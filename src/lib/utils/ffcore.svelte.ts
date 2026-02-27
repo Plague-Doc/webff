@@ -44,18 +44,21 @@ class Converter {
 		}
 	}
 
-	async transcode(file: File, args: string[], outName: string) {
+	async transcode(file: File, args: string[], outputName: string) {
 		const ffmpeg = this.ffmpeg;
 		if (!ffmpeg) return;
 
 		try {
 			await ffmpeg.writeFile(file.name, await fetchFile(file));
-			await ffmpeg.exec(['-i', file.name, ...args, outName]);
+			await ffmpeg.exec(['-y', '-i', file.name, ...args, outputName]);
 
-			const data = await ffmpeg.readFile(outName);
+			const data = await ffmpeg.readFile(outputName);
 			const fileData = typeof data === 'string' ? data : (data as ArrayBufferView<ArrayBuffer>);
 
-			return new File([new Blob([fileData])], outName);
+			await ffmpeg.deleteFile(file.name);
+			await ffmpeg.deleteFile(outputName);
+
+			return new File([new Blob([fileData])], outputName);
 		} catch (err) {
 			console.warn(err);
 			await this.load();
