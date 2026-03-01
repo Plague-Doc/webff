@@ -9,10 +9,10 @@ importers:
   .:
     dependencies:
       '@ffmpeg/ffmpeg':
-        specifier: ^0.12.15
+        specifier: 0.12.15
         version: 0.12.15
       '@ffmpeg/util':
-        specifier: ^0.12.2
+        specifier: 0.12.2
         version: 0.12.2
       file-saver:
         specifier: ^2.0.5
