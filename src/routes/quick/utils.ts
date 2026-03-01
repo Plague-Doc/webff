@@ -15,41 +15,122 @@ const formats: Record<string, Format[]> = {
 		{
 			label: 'MP4',
 			extension: '.mp4',
-			options: ['-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '192k']
+			options: [
+				'-c:v',
+				'libx264',
+				'-preset',
+				'superfast',
+				'-crf',
+				'23',
+				'-threads',
+				'0',
+				'-pix_fmt',
+				'yuv420p',
+				'-c:a',
+				'aac',
+				'-b:a',
+				'128k'
+			]
 		},
 		{
 			label: 'MOV',
 			extension: '.mov',
-			options: ['-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '192k']
+			options: [
+				'-c:v',
+				'libx264',
+				'-preset',
+				'superfast',
+				'-crf',
+				'23',
+				'-threads',
+				'0',
+				'-pix_fmt',
+				'yuv420p',
+				'-c:a',
+				'aac',
+				'-b:a',
+				'128k'
+			]
 		},
 		{
 			label: 'MKV',
 			extension: '.mkv',
-			options: ['-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '192k']
+			options: [
+				'-c:v',
+				'libx264',
+				'-preset',
+				'superfast',
+				'-crf',
+				'23',
+				'-threads',
+				'0',
+				'-pix_fmt',
+				'yuv420p',
+				'-c:a',
+				'aac',
+				'-b:a',
+				'128k'
+			]
 		},
 		{
 			label: 'AVI',
 			extension: '.avi',
-			options: ['-c:v', 'mpeg4', '-q:v', '5', '-c:a', 'aac', '-b:a', '192k']
+			options: ['-c:v', 'mpeg4', '-vtag', 'xvid', '-q:v', '5', '-threads', '0', '-c:a', 'libmp3lame', '-b:a', '128k']
 		},
 		{
 			label: 'WMV',
 			extension: '.wmv',
-			options: ['-c:v', 'mpeg4', '-q:v', '5', '-c:a', 'aac', '-b:a', '192k']
+			options: ['-c:v', 'wmv2', '-q:v', '5', '-threads', '0', '-c:a', 'wmav2', '-b:a', '128k']
 		}
 	],
 	image: [
-		{ label: 'JPEG', extension: '.jpeg', options: ['-q:v', '2'] },
-		{ label: 'PNG', extension: '.png', options: [] },
-		{ label: 'GIF', extension: '.gif', options: [] },
-		{ label: 'TIFF', extension: '.tiff', options: [] },
-		{ label: 'BMP', extension: '.bmp', options: [] }
+		{
+			label: 'JPEG',
+			extension: '.jpeg',
+			options: ['-frames:v', '1', '-c:v', 'mjpeg', '-q:v', '2']
+		},
+		{
+			label: 'PNG',
+			extension: '.png',
+			options: ['-frames:v', '1', '-c:v', 'png']
+		},
+		{
+			label: 'GIF',
+			extension: '.gif',
+			options: []
+		},
+		{
+			label: 'TIFF',
+			extension: '.tiff',
+			options: ['-frames:v', '1']
+		},
+		{
+			label: 'BMP',
+			extension: '.bmp',
+			options: ['-frames:v', '1']
+		}
 	],
 	audio: [
-		{ label: 'MP3', extension: '.mp3', options: ['-c:a', 'libmp3lame', '-q:a', '2'] },
-		{ label: 'WAV', extension: '.wav', options: [] },
-		{ label: 'FLAC', extension: '.flac', options: [] },
-		{ label: 'OGG', extension: '.ogg', options: ['-c:a', 'libvorbis', '-q:a', '4'] }
+		{
+			label: 'MP3',
+			extension: '.mp3',
+			options: ['-c:a', 'libmp3lame', '-q:a', '4']
+		},
+		{
+			label: 'WAV',
+			extension: '.wav',
+			options: ['-c:a', 'pcm_s16le']
+		},
+		{
+			label: 'FLAC',
+			extension: '.flac',
+			options: ['-c:a', 'flac']
+		},
+		{
+			label: 'OGG',
+			extension: '.ogg',
+			options: ['-c:a', 'libvorbis', '-q:a', '4']
+		}
 	]
 };
 

@@ -19,18 +19,18 @@ export function isUploadValid(files: FileState[]): boolean {
 	return true;
 }
 
-const webpOptions = ['-c:v', 'libwebp', '-lossless', '1'];
+const webpOptions = ['-frames:v', '1', '-c:v', 'libwebp', '-q:v', '80'];
 const webmOptions = [
 	'-c:v',
 	'libvpx',
-	'-qmin',
-	'4',
-	'-qmax',
-	'40',
+	'-crf',
+	'23',
+	'-b:v',
+	'2M',
 	'-cpu-used',
 	'5',
-	'-deadline',
-	'realtime',
+	'-threads',
+	'0',
 	'-c:a',
 	'libvorbis',
 	'-q:a',
